@@ -156,8 +156,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.3
+  m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &288102163
@@ -185,12 +185,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 428d7d19883df004dad673fab411b0d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertical: 1
-  horizontal: 1
   activeModel: {fileID: 0}
+  vertical: 0
+  horizontal: 0
+  moveAmount: 0
+  moveDir: {x: 0, y: 0, z: 0}
+  moveSpeed: 3.5
+  runSpeed: 5.5
+  rotateSpeed: 9
+  toGround: 0.5
+  onGround: 0
+  run: 0
   anim: {fileID: 0}
   rb: {fileID: 0}
   delta: 0
+  ignoreLayers:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &288102165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,7 +525,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh-30678
+  m_Name: pb_Mesh11422
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -798,10 +809,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lockOn: 0
-  followSpeed: 9
+  followSpeed: 3
   mouseSpeed: 2
-  controllerSpeed: 7
+  controllerSpeed: 5
   target: {fileID: 0}
+  pivot: {fileID: 0}
+  camTrans: {fileID: 0}
   minAngle: -35
   maxAngle: 35
   lookAngle: 0
