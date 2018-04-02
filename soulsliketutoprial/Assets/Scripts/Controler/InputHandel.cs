@@ -58,7 +58,10 @@ namespace SA
         {
             vertical = Input.GetAxis("Vertical");
             horizontal = Input.GetAxis("Horizontal");
-            b_input = Input.GetButton("b_input");
+            b_input = Input.GetButton("B");
+            a_input = Input.GetButton("A");
+            x_input = Input.GetButton("X");
+            y_input = Input.GetButtonUp("Y");
             rt_input = Input.GetButton("RT");
             rt_axis = Input.GetAxis("RT");
             if (rt_axis != 0)
@@ -99,6 +102,11 @@ namespace SA
             states.lt = lt_input;
             states.rb = rb_input;
             states.lb = lb_input;
+            if(y_input)
+            {
+                states.isTwoHanded = !states.isTwoHanded;
+                states.HandleTwoHanded();
+            }
 
         }
     }

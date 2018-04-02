@@ -16,17 +16,22 @@ namespace SA
         public float moveAmount;
         public Vector3 moveDir;
         public bool rt, lt, rb, lb;
+        public bool twoHanded;
         [Header("stats")]
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
-        public bool lockOn;
-        public bool inAction;
-        public bool canMove;
+
+       
+
         [Header("States")]
         public bool onGround;
         public bool run;
+        public bool canMove;
+        public bool lockOn;
+        public bool inAction;
+        public bool isTwoHanded;
         [HideInInspector]
         public Animator anim;
         [HideInInspector]
@@ -161,7 +166,10 @@ namespace SA
             anim.SetBool("run", run);
             anim.SetFloat("Vertical", moveAmount, 0.4f, delta);
         }
-
+        public void HandleTwoHanded()
+        {
+            anim.SetBool("two_handed", isTwoHanded);
+        }
         public bool OnGround()
         {
             bool r = false;
