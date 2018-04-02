@@ -190,18 +190,26 @@ MonoBehaviour:
   horizontal: 0
   moveAmount: 0
   moveDir: {x: 0, y: 0, z: 0}
+  rt: 0
+  lt: 0
+  rb: 0
+  lb: 0
   moveSpeed: 3.5
   runSpeed: 5.5
   rotateSpeed: 9
   toGround: 0.5
+  lockOn: 0
+  inAction: 0
+  canMove: 0
   onGround: 0
   run: 0
   anim: {fileID: 0}
-  rb: {fileID: 0}
+  rib: {fileID: 0}
   delta: 0
   ignoreLayers:
     serializedVersion: 2
     m_Bits: 0
+  a_hook: {fileID: 0}
 --- !u!114 &288102165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -213,8 +221,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4d8638dc4fac01418d265551e794014, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  horizontal: 0
-  vertical: 0
 --- !u!1 &294322260
 GameObject:
   m_ObjectHideFlags: 0
@@ -811,7 +817,7 @@ MonoBehaviour:
   lockOn: 0
   followSpeed: 3
   mouseSpeed: 2
-  controllerSpeed: 5
+  controllerSpeed: 6
   target: {fileID: 0}
   pivot: {fileID: 0}
   camTrans: {fileID: 0}

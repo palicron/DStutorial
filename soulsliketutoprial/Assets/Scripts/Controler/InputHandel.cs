@@ -6,17 +6,20 @@ namespace SA
 {
     public class InputHandel : MonoBehaviour
     {
-      
+
         private float horizontal;
         private float vertical;
         private bool b_input;
         private bool a_input;
         private bool x_input;
         private bool y_input;
+
         private bool rb_input;
-        private float rt_input;
+        private float rt_axis;
+        private bool rt_input;
         private bool lb_input;
-        private float lt_input;
+        private float lt_axis;
+        private bool lt_input;
 
 
         StateManager states;
@@ -56,6 +59,19 @@ namespace SA
             vertical = Input.GetAxis("Vertical");
             horizontal = Input.GetAxis("Horizontal");
             b_input = Input.GetButton("b_input");
+            rt_input = Input.GetButton("RT");
+            rt_axis = Input.GetAxis("RT");
+            if (rt_axis != 0)
+                rt_input = true;
+
+            lt_input = Input.GetButton("LT");
+            lt_axis = Input.GetAxis("LT");
+            if (lt_axis != 0)
+                lt_input = true;
+            rb_input = Input.GetButton("RB");
+            lb_input = Input.GetButton("LB");
+
+
         }
 
         private void UpdateStates()
@@ -78,7 +94,11 @@ namespace SA
             {
                 states.run = false;
             }
-
+        
+            states.rt = rt_input;
+            states.lt = lt_input;
+            states.rb = rb_input;
+            states.lb = lb_input;
 
         }
     }

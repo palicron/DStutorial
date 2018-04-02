@@ -15,31 +15,39 @@ namespace SA
         public float horizontal;
         public float moveAmount;
         public Vector3 moveDir;
+        public bool rt, lt, rb, lb;
         [Header("stats")]
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
         public bool lockOn;
+        public bool inAction;
+        public bool canMove;
         [Header("States")]
         public bool onGround;
         public bool run;
         [HideInInspector]
         public Animator anim;
         [HideInInspector]
-        public Rigidbody rb;
+        public Rigidbody rib;
         [HideInInspector]
         public float delta;
         [HideInInspector]
         public LayerMask ignoreLayers;
+        [HideInInspector]
+        public AnimatorHook a_hook;
+        private float _actionDelay;
 
         public void Init()
         {
             setUpAnimator();
-            rb = this.GetComponent<Rigidbody>();
-            rb.angularDrag = 999;
-            rb.drag = 4;
-            rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            rib = this.GetComponent<Rigidbody>();
+            rib.angularDrag = 999;
+            rib.drag = 4;
+            rib.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            a_hook = activeModel.AddComponent<AnimatorHook>();
+            a_hook.Int(this);
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
             anim.SetBool("onGround", false);
@@ -71,20 +79,42 @@ namespace SA
         {
             delta = d;
 
+
+            
+            DetectAction();
+
+            if (inAction)
+            {
+                anim.applyRootMotion = true;
+                _actionDelay += delta;
+                if(_actionDelay>0.13f)
+                {
+                    inAction = false;
+                    _actionDelay = 0;
+
+                }
+                return;
+            }
+            canMove = anim.GetBool("canMove");
+
+            if (!canMove )
+                   return;
+
+            anim.applyRootMotion = false;
             if (moveAmount > 0 || !onGround)
             {
-                rb.drag = 0;
+                rib.drag = 0;
             }
             else
             {
-                rb.drag = 4;
+                rib.drag = 4;
             }
             float tspeed = moveSpeed;
             if (run)
                 tspeed = runSpeed;
 
             if (onGround)
-                rb.velocity = moveDir * (tspeed * moveAmount);
+                rib.velocity = moveDir * (tspeed * moveAmount);
             if (run)
                 lockOn = false;
             if(!lockOn)
@@ -102,7 +132,30 @@ namespace SA
 
             HandleMovementAnimation();
         }
+        public void DetectAction()
+        {
 
+            if (!canMove)
+                return;
+            if (!rb && !rt && !lt && !lb)
+                return;
+          
+            string tagetAnimation=null;
+
+            if (rb)
+                tagetAnimation = "oh_attack_1";
+            if (rt)
+                tagetAnimation = "oh_attack_2";
+            if (lt)
+                tagetAnimation = "oh_attack_3";
+            if (lb)
+                tagetAnimation = "oh_attack_3";
+            canMove = false;
+               inAction = true;
+               anim.CrossFade(tagetAnimation,0.14f);
+           // rib.drag = 4;
+
+        }
         public void HandleMovementAnimation()
         {
             anim.SetBool("run", run);
