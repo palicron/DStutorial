@@ -17,6 +17,8 @@ namespace SA
         public Vector3 moveDir;
         public bool rt, lt, rb, lb;
         public bool twoHanded;
+        public bool rollinput; 
+
         [Header("stats")]
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
@@ -33,6 +35,7 @@ namespace SA
         public bool isTwoHanded;
         [Header("Other")]
         public EnemyTarget lockOnTarget;
+      
 
         [HideInInspector]
         public Animator anim;
@@ -105,6 +108,7 @@ namespace SA
             if (!canMove)
                 return;
 
+            handleRolls();
             anim.applyRootMotion = false;
             if (moveAmount > 0 || !onGround)
             {
@@ -174,6 +178,35 @@ namespace SA
             float v = relativeDir.z;
             anim.SetFloat("Vertical", v, 0.2f, delta);
             anim.SetFloat("Horizontal", h, 0.2f, delta);
+        }
+        private void handleRolls()
+        {
+            if (!rollinput)
+                return;
+
+
+            float v = vertical;
+            float h = horizontal;
+
+            if (!lockOn)
+            {
+                v = (moveAmount>0.3f)?1:0;
+                h = 0;
+            }
+            else
+            {
+
+                if(Mathf.Abs(v)<0.3f)
+                    v = 0;
+                if (Mathf.Abs(h) < 0.3f)
+                    h = 0;
+            }
+
+            anim.SetFloat("Vertical", v);
+            anim.SetFloat("Horizontal", h);
+            canMove = false;
+            inAction = true;
+            anim.CrossFade("Rolls", 0.14f);
         }
         public void HandleTwoHanded()
         {
