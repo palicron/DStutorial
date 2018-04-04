@@ -23,7 +23,6 @@ namespace SA
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
 
-       
 
         [Header("States")]
         public bool onGround;
@@ -32,6 +31,9 @@ namespace SA
         public bool lockOn;
         public bool inAction;
         public bool isTwoHanded;
+        [Header("Other")]
+        public EnemyTarget lockOnTarget;
+
         [HideInInspector]
         public Animator anim;
         [HideInInspector]
@@ -84,15 +86,13 @@ namespace SA
         {
             delta = d;
 
-
-            
             DetectAction();
 
             if (inAction)
             {
                 anim.applyRootMotion = true;
                 _actionDelay += delta;
-                if(_actionDelay>0.13f)
+                if (_actionDelay > 0.13f)
                 {
                     inAction = false;
                     _actionDelay = 0;
@@ -102,8 +102,8 @@ namespace SA
             }
             canMove = anim.GetBool("canMove");
 
-            if (!canMove )
-                   return;
+            if (!canMove)
+                return;
 
             anim.applyRootMotion = false;
             if (moveAmount > 0 || !onGround)
@@ -122,10 +122,9 @@ namespace SA
                 rib.velocity = moveDir * (tspeed * moveAmount);
             if (run)
                 lockOn = false;
-            if(!lockOn)
-            {
 
-            Vector3 targetDir = moveDir;
+
+            Vector3 targetDir = (!lockOn) ? moveDir : lockOnTarget.transform.position - transform.position;
             targetDir.y = 0;
             if (targetDir == Vector3.zero)
                 targetDir = transform.forward;
@@ -133,9 +132,11 @@ namespace SA
             Quaternion targetRotation = Quaternion.Slerp(transform.rotation, tr, delta * moveAmount * rotateSpeed);
             transform.rotation = targetRotation;
 
-            }
-
-            HandleMovementAnimation();
+            anim.SetBool("lockOn", lockOn);
+            if (!lockOn)
+                HandleMovementAnimation();
+            else
+                HandleLockOnAnimation(moveDir);
         }
         public void DetectAction()
         {
@@ -144,8 +145,8 @@ namespace SA
                 return;
             if (!rb && !rt && !lt && !lb)
                 return;
-          
-            string tagetAnimation=null;
+
+            string tagetAnimation = null;
 
             if (rb)
                 tagetAnimation = "oh_attack_1";
@@ -156,15 +157,23 @@ namespace SA
             if (lb)
                 tagetAnimation = "oh_attack_3";
             canMove = false;
-               inAction = true;
-               anim.CrossFade(tagetAnimation,0.14f);
-           // rib.drag = 4;
+            inAction = true;
+            anim.CrossFade(tagetAnimation, 0.14f);
+            // rib.drag = 4;
 
         }
         public void HandleMovementAnimation()
         {
             anim.SetBool("run", run);
             anim.SetFloat("Vertical", moveAmount, 0.4f, delta);
+        }
+        public void HandleLockOnAnimation(Vector3 moveDir)
+        {
+            Vector3 relativeDir = transform.InverseTransformDirection(moveDir);
+            float h = relativeDir.x;
+            float v = relativeDir.z;
+            anim.SetFloat("Vertical", v, 0.2f, delta);
+            anim.SetFloat("Horizontal", h, 0.2f, delta);
         }
         public void HandleTwoHanded()
         {

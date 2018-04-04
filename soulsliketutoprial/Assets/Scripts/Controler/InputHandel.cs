@@ -20,7 +20,8 @@ namespace SA
         private bool lb_input;
         private float lt_axis;
         private bool lt_input;
-
+        private bool leftAxis_down;
+        private bool rightAxis_down;
 
         StateManager states;
         CamaraManager camaraManager;
@@ -74,6 +75,9 @@ namespace SA
             rb_input = Input.GetButton("RB");
             lb_input = Input.GetButton("LB");
 
+            rightAxis_down = Input.GetButtonUp("L");
+            Debug.Log(rightAxis_down);
+            
 
         }
 
@@ -106,6 +110,17 @@ namespace SA
             {
                 states.isTwoHanded = !states.isTwoHanded;
                 states.HandleTwoHanded();
+            }
+
+            if(rightAxis_down)
+            {
+                states.lockOn = !states.lockOn;
+                if(states.lockOnTarget==null)
+                {
+                    states.lockOn = false;
+                }
+                camaraManager.lockonTarget = states.lockOnTarget.transform;
+                camaraManager.lockOn = states.lockOn;
             }
 
         }
