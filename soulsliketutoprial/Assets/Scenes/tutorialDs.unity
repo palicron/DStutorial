@@ -261,10 +261,12 @@ MonoBehaviour:
   rb: 0
   lb: 0
   twoHanded: 0
+  rollinput: 0
   moveSpeed: 3.5
   runSpeed: 5.5
   rotateSpeed: 9
   toGround: 0.5
+  rollSpeed: 15
   onGround: 0
   run: 0
   canMove: 0
@@ -272,6 +274,54 @@ MonoBehaviour:
   inAction: 0
   isTwoHanded: 0
   lockOnTarget: {fileID: 2040781642}
+  roll_curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 2
+      time: 0.0035963356
+      value: 0.010774493
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 0.10726322
+      value: 0.9887437
+      inSlope: -1.005471
+      outSlope: -1.005471
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 0.17023794
+      value: 1.0096099
+      inSlope: 0.2130866
+      outSlope: 0.2130866
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 0.3023779
+      value: 1.0127282
+      inSlope: -0.034570694
+      outSlope: -0.034570694
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 0.7497791
+      value: 0.9846059
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 0.8419597
+      value: 0.9667443
+      inSlope: -0.40531158
+      outSlope: -0.40531158
+      tangentMode: 1
+    - serializedVersion: 2
+      time: 1.013625
+      value: 0.0061921366
+      inSlope: -2.465565
+      outSlope: -2.465565
+      tangentMode: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 0
   anim: {fileID: 0}
   rib: {fileID: 0}
   delta: 0
@@ -600,7 +650,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13644
+  m_Name: pb_Mesh13738
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2

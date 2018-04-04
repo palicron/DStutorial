@@ -17,14 +17,14 @@ namespace SA
         public Vector3 moveDir;
         public bool rt, lt, rb, lb;
         public bool twoHanded;
-        public bool rollinput; 
+        public bool rollinput;
 
         [Header("stats")]
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
         public float rotateSpeed = 5;
         public float toGround = 0.5f;
-
+        public float rollSpeed = 1f;
 
         [Header("States")]
         public bool onGround;
@@ -35,7 +35,7 @@ namespace SA
         public bool isTwoHanded;
         [Header("Other")]
         public EnemyTarget lockOnTarget;
-      
+        public AnimationCurve roll_curve;
 
         [HideInInspector]
         public Animator anim;
@@ -107,7 +107,8 @@ namespace SA
 
             if (!canMove)
                 return;
-
+            //a_hook.rm_multi = 1;
+            a_hook.CloseRoll();
             handleRolls();
             anim.applyRootMotion = false;
             if (moveAmount > 0 || !onGround)
@@ -187,26 +188,41 @@ namespace SA
 
             float v = vertical;
             float h = horizontal;
+            v = (moveAmount > 0.3f) ? 1 : 0;
+            h = 0;
+            /*  if (!lockOn)
+              {
+                  v = (moveAmount>0.3f)?1:0;
+                  h = 0;
+              }
+              else
+              {
 
-            if (!lockOn)
+                  if(Mathf.Abs(v)<0.3f)
+                      v = 0;
+                  if (Mathf.Abs(h) < 0.3f)
+                      h = 0;
+              }*/
+           if(v!=0)
             {
-                v = (moveAmount>0.3f)?1:0;
-                h = 0;
+                if (moveDir == Vector3.zero)
+                    moveDir = transform.forward;
+                Quaternion targetRot = Quaternion.LookRotation(moveDir);
+                transform.rotation = targetRot;
+                a_hook.InitForRoll();
+                a_hook.rm_multi = rollSpeed;
             }
-            else
+           else
             {
-
-                if(Mathf.Abs(v)<0.3f)
-                    v = 0;
-                if (Mathf.Abs(h) < 0.3f)
-                    h = 0;
+                a_hook.rm_multi = 1.3f;
             }
-
+            
             anim.SetFloat("Vertical", v);
             anim.SetFloat("Horizontal", h);
             canMove = false;
             inAction = true;
             anim.CrossFade("Rolls", 0.14f);
+           
         }
         public void HandleTwoHanded()
         {
