@@ -273,7 +273,8 @@ MonoBehaviour:
   lockOn: 0
   inAction: 0
   isTwoHanded: 0
-  lockOnTarget: {fileID: 2040781642}
+  lockOnTarget: {fileID: 2069374026}
+  lockOnTranform: {fileID: 0}
   roll_curve:
     serializedVersion: 2
     m_Curve:
@@ -650,7 +651,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh13738
+  m_Name: pb_Mesh11508
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2
@@ -1083,6 +1084,7 @@ MonoBehaviour:
   controllerSpeed: 6
   target: {fileID: 0}
   lockonTarget: {fileID: 0}
+  lockOnTransform: {fileID: 0}
   pivot: {fileID: 0}
   camTrans: {fileID: 0}
   minAngle: -35
@@ -1356,6 +1358,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5a99ab3109a5843b073eab5a2da389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
+  targets: []
+  h_bones: 
 --- !u!1 &2069374023 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100048, guid: 650aa58372ebc914e86d30db681925bc, type: 3}
@@ -1371,3 +1376,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b5a99ab3109a5843b073eab5a2da389, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  index: 0
+  targets: []
+  h_bones: 000000000300000004000000

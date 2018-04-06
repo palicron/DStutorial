@@ -34,7 +34,7 @@ namespace SA
             states.Init();
 
             camaraManager = CamaraManager.singleton;
-            camaraManager.Init(this.transform);
+            camaraManager.Init(states);
 
         }
 
@@ -121,8 +121,10 @@ namespace SA
                 {
                     states.lockOn = false;
                 }
-                camaraManager.lockonTarget = states.lockOnTarget.transform;
+                camaraManager.lockonTarget = states.lockOnTarget;
+                states.lockOnTranform = camaraManager.lockOnTransform;
                 camaraManager.lockOn = states.lockOn;
+         
             }
 
         }

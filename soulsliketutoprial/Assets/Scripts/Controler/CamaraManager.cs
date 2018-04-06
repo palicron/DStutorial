@@ -16,8 +16,8 @@ namespace SA
         public float mouseSpeed = 2;
         public float controllerSpeed = 7;
         public Transform target;
-        public Transform lockonTarget;
-
+        public EnemyTarget lockonTarget;
+        public Transform lockOnTransform;
         [HideInInspector]
         public Transform pivot;
         [HideInInspector]
@@ -30,6 +30,8 @@ namespace SA
         private float smoothSpeddX;
         private float smoothSpeddY;
 
+        private bool usedRightAxis;
+        private StateManager states;
         [SerializeField]
         private float lookAngle;
         [SerializeField]
@@ -43,9 +45,10 @@ namespace SA
         }
 
 
-        public void Init(Transform t)
+        public void Init(StateManager st)
         {
-            target = t;
+            states = st;
+            target = states.transform;
 
             camTrans = Camera.main.transform;
             pivot = camTrans.parent;
@@ -58,6 +61,32 @@ namespace SA
             float c_h = Input.GetAxis("RightAxis X");
             float c_v = Input.GetAxis("RightAxis Y");
 
+            if(lockonTarget!=null)
+            {
+                if (lockOnTransform == null)
+                {
+                    lockOnTransform = lockonTarget.GetTarget();
+                    states.lockOnTranform = lockOnTransform;
+                }
+                if(Mathf.Abs(c_h)>0.6f)
+                {
+                    if (!usedRightAxis)
+                    {
+                        lockOnTransform = lockonTarget.GetTarget((c_h>0));
+                        states.lockOnTranform = lockOnTransform;
+                        usedRightAxis = true;
+                    }
+           
+                }
+            }
+       
+            if(usedRightAxis)
+            {
+                if(Mathf.Abs(c_h)<0.6f)
+                {
+                    usedRightAxis = false;
+                }
+            }
             float targetspeed = mouseSpeed;
             if (c_h != 0 || c_v != 0)
             {
@@ -97,7 +126,7 @@ namespace SA
 
             if (lockOn && lockonTarget !=null)
             {
-                Vector3 targetDir = lockonTarget.position - transform.position;
+                Vector3 targetDir = lockOnTransform.position - transform.position;
                 targetDir.Normalize();
                 //targetDir.y = 0;
                 if (targetDir == Vector3.zero)
@@ -107,6 +136,7 @@ namespace SA
                 lookAngle = transform.eulerAngles.y;
                 return;
             }
+       
             lookAngle += smoothX * targetSpeed;
             transform.rotation = Quaternion.Euler(0, lookAngle, 0);
 

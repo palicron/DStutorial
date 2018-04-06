@@ -35,6 +35,7 @@ namespace SA
         public bool isTwoHanded;
         [Header("Other")]
         public EnemyTarget lockOnTarget;
+        public Transform lockOnTranform;
         public AnimationCurve roll_curve;
 
         [HideInInspector]
@@ -129,7 +130,9 @@ namespace SA
                 lockOn = false;
 
 
-            Vector3 targetDir = (!lockOn) ? moveDir : lockOnTarget.transform.position - transform.position;
+            Vector3 targetDir = (!lockOn) ? moveDir :
+                (lockOnTranform != null) ? lockOnTranform.transform.position - transform.position :
+                moveDir;
             targetDir.y = 0;
             if (targetDir == Vector3.zero)
                 targetDir = transform.forward;
@@ -203,7 +206,7 @@ namespace SA
                   if (Mathf.Abs(h) < 0.3f)
                       h = 0;
               }*/
-           if(v!=0)
+            if (v != 0)
             {
                 if (moveDir == Vector3.zero)
                     moveDir = transform.forward;
@@ -212,17 +215,17 @@ namespace SA
                 a_hook.InitForRoll();
                 a_hook.rm_multi = rollSpeed;
             }
-           else
+            else
             {
                 a_hook.rm_multi = 1.3f;
             }
-            
+
             anim.SetFloat("Vertical", v);
             anim.SetFloat("Horizontal", h);
             canMove = false;
             inAction = true;
             anim.CrossFade("Rolls", 0.14f);
-           
+
         }
         public void HandleTwoHanded()
         {
