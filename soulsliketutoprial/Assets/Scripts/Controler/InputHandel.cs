@@ -50,18 +50,16 @@ namespace SA
             UpdateStates();
             states.FixedTick(delta);
             camaraManager.Tick(delta);
+         
 
-            if (!b_input)
-                b_timer = 0;
 
-            if (states.rollinput)
-                states.rollinput = false;
         }
 
         private void Update()
         {
             delta = Time.deltaTime;
             states.Tick(delta);
+            ResetInputs();
 
         }
 
@@ -112,10 +110,10 @@ namespace SA
                 states.run = (states.moveAmount > 0);
 
             }
-            else
-            {
-                states.run = false;
-            }
+            //else
+            //{
+            //    states.run = false;
+            //}
 
             if (!b_input && b_timer > 0 && b_timer < 0.5f)
                 states.rollinput = true;
@@ -144,6 +142,18 @@ namespace SA
          
             }
 
+        }
+
+        private void ResetInputs()
+        {
+            if (!b_input)
+                b_timer = 0;
+
+            if (states.rollinput)
+                states.rollinput = false;
+
+            if (states.run)
+                states.run = false;
         }
     }
 }

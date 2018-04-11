@@ -43,6 +43,8 @@ namespace SA
         [HideInInspector]
         public Rigidbody rib;
         [HideInInspector]
+        public ActionManager actionManager;
+        [HideInInspector]
         public float delta;
         [HideInInspector]
         public LayerMask ignoreLayers;
@@ -62,6 +64,8 @@ namespace SA
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
             anim.SetBool("onGround", false);
+            actionManager = GetComponent<ActionManager>();
+            actionManager.Init();
 
         }
 
