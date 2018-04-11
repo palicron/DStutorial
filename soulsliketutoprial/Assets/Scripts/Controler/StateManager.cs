@@ -231,7 +231,7 @@ namespace SA
         {
             anim.SetBool("two_handed", isTwoHanded);
         }
-        public bool OnGround()
+    public bool OnGround()
         {
             bool r = false;
 

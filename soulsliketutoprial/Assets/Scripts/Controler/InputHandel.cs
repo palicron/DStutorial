@@ -23,6 +23,10 @@ namespace SA
         private bool leftAxis_down;
         private bool rightAxis_down;
 
+        private float b_timer;
+        private float rt_timer;
+        private float lt_timer;
+
         StateManager states;
         CamaraManager camaraManager;
 
@@ -46,6 +50,12 @@ namespace SA
             UpdateStates();
             states.FixedTick(delta);
             camaraManager.Tick(delta);
+
+            if (!b_input)
+                b_timer = 0;
+
+            if (states.rollinput)
+                states.rollinput = false;
         }
 
         private void Update()
@@ -76,7 +86,9 @@ namespace SA
             lb_input = Input.GetButton("LB");
 
             rightAxis_down = Input.GetButtonUp("L");
-            Debug.Log(rightAxis_down);
+
+            if (b_input)
+                b_timer += delta;
             
 
         }
@@ -93,16 +105,21 @@ namespace SA
             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
             states.moveAmount = Mathf.Clamp01(m);
 
-            states.rollinput = b_input;
-            if (b_input)
+            // states.rollinput = b_input;}
+            Debug.Log(b_timer);
+            if (b_input && b_timer>0.5f)
             {
-              //  states.run = (states.moveAmount > 0);
+                states.run = (states.moveAmount > 0);
 
             }
             else
             {
-               // states.run = false;
+                states.run = false;
             }
+
+            if (!b_input && b_timer > 0 && b_timer < 0.5f)
+                states.rollinput = true;
+
         
             states.rt = rt_input;
             states.lt = lt_input;
