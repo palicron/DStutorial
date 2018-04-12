@@ -6,7 +6,7 @@ namespace SA
 {
 
 public class ActionManager : MonoBehaviour {
-
+        
         public List<Action> actionSlots = new List<Action>();
 
         public void Init()
@@ -26,9 +26,26 @@ public class ActionManager : MonoBehaviour {
             }
         }
 
-        public Action GetAction(StateManager st)
+        public Action GetActionSlot(StateManager st)
         {
+            ActionInput a_input = GetActionInput(st);
+            return GetAction(a_input);
+        }
 
+        public Action GetAction(ActionInput inp)
+        {
+           
+            for (int i = 0; i < actionSlots.Count; i++)
+            {
+                if (actionSlots[i].input == inp)
+                {
+                    return actionSlots[i];
+                }
+                    
+
+            }
+
+            return null;
         }
         public ActionInput GetActionInput(StateManager st)
         {

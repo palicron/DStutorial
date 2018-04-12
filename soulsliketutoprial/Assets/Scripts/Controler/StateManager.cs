@@ -160,14 +160,10 @@ namespace SA
 
             string tagetAnimation = null;
 
-            if (rb)
-                tagetAnimation = "oh_attack_1";
-            if (rt)
-                tagetAnimation = "oh_attack_2";
-            if (lt)
-                tagetAnimation = "oh_attack_3";
-            if (lb)
-                tagetAnimation = "oh_attack_3";
+            Action slot = actionManager.GetActionSlot(this);
+            if (slot == null)
+                return;
+            tagetAnimation = slot.targetAnim;
             canMove = false;
             inAction = true;
             anim.CrossFade(tagetAnimation, 0.14f);
