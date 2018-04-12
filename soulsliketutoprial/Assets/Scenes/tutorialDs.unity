@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 288102165}
   - component: {fileID: 288102164}
   - component: {fileID: 288102166}
+  - component: {fileID: 288102167}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -304,14 +305,14 @@ MonoBehaviour:
       outSlope: -0.034570694
       tangentMode: 1
     - serializedVersion: 2
-      time: 0.7497791
-      value: 0.9846059
+      time: 0.70769536
+      value: 0.9341527
       inSlope: 0
       outSlope: 0
       tangentMode: 1
     - serializedVersion: 2
-      time: 0.8419597
-      value: 0.9667443
+      time: 0.7746227
+      value: 0.8784493
       inSlope: -0.40531158
       outSlope: -0.40531158
       tangentMode: 1
@@ -332,6 +333,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   a_hook: {fileID: 0}
+  inventoryManager: {fileID: 0}
 --- !u!114 &288102165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,13 +358,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actionSlots:
   - input: 0
-    targetAnim: oh_attack_1
+    targetAnim: 
   - input: 1
     targetAnim: 
   - input: 2
-    targetAnim: oh_attack_3
+    targetAnim: 
   - input: 3
-    targetAnim: parry
+    targetAnim: 
+--- !u!114 &288102167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 288102160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3868b7dd9571d5f4e8a8b04e23ce2a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  curWeapon:
+    actions:
+    - input: 0
+      targetAnim: oh_attack_1
+    - input: 0
+      targetAnim: oh_attack_3
+    two_HandedAction:
+    - input: 0
+      targetAnim: oh_attack_02
 --- !u!1 &294322260
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,7 +695,7 @@ Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: pb_Mesh11970
+  m_Name: pb_Mesh14162
   serializedVersion: 8
   m_SubMeshes:
   - serializedVersion: 2

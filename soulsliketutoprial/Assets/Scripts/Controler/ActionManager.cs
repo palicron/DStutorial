@@ -5,15 +5,40 @@ using UnityEngine;
 namespace SA
 {
 
-public class ActionManager : MonoBehaviour {
-        
+    public class ActionManager : MonoBehaviour
+    {
+
         public List<Action> actionSlots = new List<Action>();
-
-        public void Init()
+        StateManager states;
+        public void Init(StateManager st)
         {
-        
-        
+            states = st;
 
+            UpdateActionsOneHanded();
+        }
+
+        public void UpdateActionsOneHanded()
+        {
+            Weapon w = states.inventoryManager.curWeapon;
+
+
+            for (int i = 0; i < w.actions.Count; i++)
+            {
+                Action a = GetAction(w.actions[i].input);
+                a.targetAnim = w.actions[i].targetAnim;
+            }
+        }
+
+        public void UpdateActionsTwoHanded()
+        {
+            Weapon w = states.inventoryManager.curWeapon;
+
+
+            for (int i = 0; i < w.two_HandedAction.Count; i++)
+            {
+                Action a = GetAction(w.two_HandedAction[i].input);
+                a.targetAnim = w.two_HandedAction[i].targetAnim;
+            }
         }
         ActionManager()
         {
@@ -34,14 +59,14 @@ public class ActionManager : MonoBehaviour {
 
         public Action GetAction(ActionInput inp)
         {
-           
+
             for (int i = 0; i < actionSlots.Count; i++)
             {
                 if (actionSlots[i].input == inp)
                 {
                     return actionSlots[i];
                 }
-                    
+
 
             }
 
@@ -49,7 +74,7 @@ public class ActionManager : MonoBehaviour {
         }
         public ActionInput GetActionInput(StateManager st)
         {
-        
+
 
             if (st.rb)
                 return ActionInput.rb;
@@ -64,13 +89,13 @@ public class ActionManager : MonoBehaviour {
 
         }
 
-        
-}
+
+    }
     public enum ActionInput
     {
-        rb,lb,rt,lt
+        rb, lb, rt, lt
     }
-[System.Serializable]
+    [System.Serializable]
     public class Action
     {
         public ActionInput input;

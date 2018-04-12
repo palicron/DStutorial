@@ -50,6 +50,8 @@ namespace SA
         public LayerMask ignoreLayers;
         [HideInInspector]
         public AnimatorHook a_hook;
+        [HideInInspector]
+        public InventoryManager inventoryManager;
         private float _actionDelay;
 
         public void Init()
@@ -59,13 +61,16 @@ namespace SA
             rib.angularDrag = 999;
             rib.drag = 4;
             rib.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            inventoryManager = GetComponent<InventoryManager>();
+            inventoryManager.Init();
+            actionManager = GetComponent<ActionManager>();
+            actionManager.Init(this);
             a_hook = activeModel.AddComponent<AnimatorHook>();
             a_hook.Int(this);
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
             anim.SetBool("onGround", false);
-            actionManager = GetComponent<ActionManager>();
-            actionManager.Init();
+
 
         }
 
@@ -230,8 +235,12 @@ namespace SA
         public void HandleTwoHanded()
         {
             anim.SetBool("two_handed", isTwoHanded);
+            if (isTwoHanded)
+                actionManager.UpdateActionsTwoHanded();
+            else
+                actionManager.UpdateActionsOneHanded();
         }
-    public bool OnGround()
+        public bool OnGround()
         {
             bool r = false;
 
