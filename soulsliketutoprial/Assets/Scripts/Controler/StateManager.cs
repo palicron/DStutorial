@@ -18,7 +18,7 @@ namespace SA
         public bool rt, lt, rb, lb;
         public bool twoHanded;
         public bool rollinput;
-
+        public bool itemInput;
         [Header("stats")]
         public float moveSpeed = 2;
         public float runSpeed = 3.5f;
@@ -33,6 +33,9 @@ namespace SA
         public bool lockOn;
         public bool inAction;
         public bool isTwoHanded;
+        public bool usingItem;
+
+
         [Header("Other")]
         public EnemyTarget lockOnTarget;
         public Transform lockOnTranform;
@@ -99,8 +102,14 @@ namespace SA
         {
             delta = d;
 
-            DetectAction();
+            usingItem = anim.GetBool("interacting");
 
+          
+           
+
+            DetectAction();
+            DetecItemAction();
+            inventoryManager.curWeapon.weaponModel.SetActive(!usingItem);
             if (inAction)
             {
                 anim.applyRootMotion = true;
@@ -130,6 +139,11 @@ namespace SA
                 rib.drag = 4;
             }
             float tspeed = moveSpeed;
+            if(usingItem)
+            {
+                run = false;
+                moveAmount = Mathf.Clamp(moveAmount, 0, 0.5f);
+            }
             if (run)
                 tspeed = runSpeed;
 
@@ -158,7 +172,7 @@ namespace SA
         public void DetectAction()
         {
 
-            if (!canMove)
+            if (!canMove || usingItem)
                 return;
             if (!rb && !rt && !lt && !lb)
                 return;
@@ -175,6 +189,21 @@ namespace SA
             // rib.drag = 4;
 
         }
+        public void DetecItemAction()
+        {
+            if (!canMove || usingItem)
+                return;
+            if (!itemInput)
+                return;
+
+            ItemAction slot = actionManager.consumableItem;
+
+            string tagetAnimation = slot.targetanim;
+
+           // inventoryManager.curWeapon.weaponModel.SetActive(false);
+            usingItem = true;
+            anim.Play(tagetAnimation);
+        }
         public void HandleMovementAnimation()
         {
             anim.SetBool("run", run);
@@ -190,7 +219,7 @@ namespace SA
         }
         private void handleRolls()
         {
-            if (!rollinput)
+            if (!rollinput || usingItem)
                 return;
 
 
@@ -252,6 +281,7 @@ namespace SA
             {
                 r = true;
                 Vector3 tagetposition = hit.point;
+                tagetposition.y = tagetposition.y + 0.04512596f;
                 transform.position = tagetposition;
             }
 

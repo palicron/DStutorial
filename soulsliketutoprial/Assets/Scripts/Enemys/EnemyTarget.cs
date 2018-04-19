@@ -12,9 +12,9 @@ public class EnemyTarget : MonoBehaviour {
         public List<HumanBodyBones> h_bones = new List<HumanBodyBones>();
         private Animator anim;
 
-        private void Start()
+        public void Init(Animator a)
         {
-            anim = GetComponent<Animator>();
+            anim = a;
             if (!anim.isHuman)
                 return;
 

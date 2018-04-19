@@ -50,7 +50,7 @@ namespace SA
             UpdateStates();
             states.FixedTick(delta);
             camaraManager.Tick(delta);
-         
+
 
 
         }
@@ -87,7 +87,7 @@ namespace SA
 
             if (b_input)
                 b_timer += delta;
-            
+
 
         }
 
@@ -103,9 +103,12 @@ namespace SA
             float m = Mathf.Abs(horizontal) + Mathf.Abs(vertical);
             states.moveAmount = Mathf.Clamp01(m);
 
-            // states.rollinput = b_input;}
-            Debug.Log(b_timer);
-            if (b_input && b_timer>0.5f)
+            if (x_input)
+                b_input = false;
+
+
+
+            if (b_input && b_timer > 0.5f)
             {
                 states.run = (states.moveAmount > 0);
 
@@ -118,28 +121,28 @@ namespace SA
             if (!b_input && b_timer > 0 && b_timer < 0.5f)
                 states.rollinput = true;
 
-        
+            states.itemInput = x_input;
             states.rt = rt_input;
             states.lt = lt_input;
             states.rb = rb_input;
             states.lb = lb_input;
-            if(y_input)
+            if (y_input)
             {
                 states.isTwoHanded = !states.isTwoHanded;
                 states.HandleTwoHanded();
             }
 
-            if(rightAxis_down)
+            if (rightAxis_down)
             {
                 states.lockOn = !states.lockOn;
-                if(states.lockOnTarget==null)
+                if (states.lockOnTarget == null)
                 {
                     states.lockOn = false;
                 }
                 camaraManager.lockonTarget = states.lockOnTarget;
                 states.lockOnTranform = camaraManager.lockOnTransform;
                 camaraManager.lockOn = states.lockOn;
-         
+
             }
 
         }
