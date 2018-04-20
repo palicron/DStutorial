@@ -36,6 +36,8 @@ namespace SA
         }
         private void OnAnimatorMove()
         {
+            if (states == null)
+                return;
             if (states.canMove)
                 return;
             states.rib.drag = 0;
@@ -65,7 +67,18 @@ namespace SA
 
         }
 
-
+        public void OpenDamageColliders()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.curWeapon.w_hook.OpenDamageColliders();
+        }
+        public void CloseDamageColliders()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.curWeapon.w_hook.CloseDamageColliders();
+        }
     }
 
 }
