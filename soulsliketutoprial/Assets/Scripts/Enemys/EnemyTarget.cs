@@ -11,10 +11,12 @@ public class EnemyTarget : MonoBehaviour {
         public List<Transform> targets = new List<Transform>();
         public List<HumanBodyBones> h_bones = new List<HumanBodyBones>();
         private Animator anim;
+        public EnemyStates eStates;
 
-        public void Init(Animator a)
+        public void Init(EnemyStates a)
         {
-            anim = a;
+            eStates = a;
+            anim = eStates.anim;
             if (!anim.isHuman)
                 return;
 

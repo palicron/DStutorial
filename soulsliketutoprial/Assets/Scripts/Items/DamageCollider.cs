@@ -13,7 +13,7 @@ public class DamageCollider : MonoBehaviour {
             if (eStates == null)
                 return;
 
-            eStates.DoDmg(5);
+            eStates.DoDmg(99);
 
         }
     }

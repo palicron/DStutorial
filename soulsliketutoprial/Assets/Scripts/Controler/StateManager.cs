@@ -68,8 +68,13 @@ namespace SA
             inventoryManager.Init();
             actionManager = GetComponent<ActionManager>();
             actionManager.Init(this);
-            a_hook = activeModel.AddComponent<AnimatorHook>();
-            a_hook.Int(this);
+
+            a_hook = activeModel.GetComponent<AnimatorHook>();
+
+            if (a_hook == null)
+                a_hook = activeModel.AddComponent<AnimatorHook>();
+
+            a_hook.Int(this, null);
             gameObject.layer = 8;
             ignoreLayers = ~(1 << 9);
             anim.SetBool("onGround", false);
@@ -104,8 +109,8 @@ namespace SA
 
             usingItem = anim.GetBool("interacting");
 
-          
-           
+
+
 
             DetectAction();
             DetecItemAction();
@@ -139,7 +144,7 @@ namespace SA
                 rib.drag = 4;
             }
             float tspeed = moveSpeed;
-            if(usingItem)
+            if (usingItem)
             {
                 run = false;
                 moveAmount = Mathf.Clamp(moveAmount, 0, 0.5f);
@@ -200,7 +205,7 @@ namespace SA
 
             string tagetAnimation = slot.targetanim;
 
-           // inventoryManager.curWeapon.weaponModel.SetActive(false);
+            // inventoryManager.curWeapon.weaponModel.SetActive(false);
             usingItem = true;
             anim.Play(tagetAnimation);
         }

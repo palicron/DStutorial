@@ -131,7 +131,18 @@ namespace SA
                 states.isTwoHanded = !states.isTwoHanded;
                 states.HandleTwoHanded();
             }
-
+            if(states.lockOnTarget != null)
+            {
+                if (states.lockOnTarget.eStates.isDead)
+                {
+                    states.lockOn = false;
+                    states.lockOnTarget = null;
+                    states.lockOnTranform = null;
+                    camaraManager.lockOn = false;
+                    camaraManager.lockonTarget = null;
+                }
+            }
+     
             if (rightAxis_down)
             {
                 states.lockOn = !states.lockOn;
@@ -139,6 +150,8 @@ namespace SA
                 {
                     states.lockOn = false;
                 }
+           
+                    
                 camaraManager.lockonTarget = states.lockOnTarget;
                 states.lockOnTranform = camaraManager.lockOnTransform;
                 camaraManager.lockOn = states.lockOn;

@@ -10,15 +10,35 @@ namespace SA
 
         private Animator anim;
         private StateManager states;
+        private EnemyStates eStates;
+        private Rigidbody rib;
+
         public float rm_multi;
-     
+        private float delta;
         private bool rolling;
         private float roll_t;
-        public void Int(StateManager st)
+
+        private AnimationCurve roll_curve;
+        public void Int(StateManager st,EnemyStates eSt)
         {
             this.states = st;
-            anim = states.anim;
+            this.eStates = eSt;
+            if(st != null)
+            {
+                anim = states.anim;
+                rib = states.rib;
+                roll_curve = states.roll_curve;
           
+            }
+       
+            if(eSt!=null)
+            {
+                anim = eStates.anim;
+                rib = eStates.rib;
+                delta = eSt.delta;
+            }
+                
+
         }
 
         public void InitForRoll()
@@ -31,39 +51,60 @@ namespace SA
             if (!rolling)
                 return;
             rm_multi = 1;
-            roll_t = 0; 
+            roll_t = 0;
             rolling = false;
         }
         private void OnAnimatorMove()
         {
-            if (states == null)
+            if (states == null && eStates == null)
                 return;
-            if (states.canMove)
+
+            if (rib == null)
                 return;
-            states.rib.drag = 0;
+
+            if (states != null)
+            {
+                if (states.canMove)
+                    return;
+
+                delta = states.delta;
+
+            }
+
+            if (eStates != null)
+            {
+                if (!eStates.canMove)
+                    return;
+                delta = eStates.delta;
+                Debug.Log("carajo");
+            }
+
+              rib.drag = 0;
 
             if (rm_multi == 0)
                 rm_multi = 1;
 
             if (!rolling)
             {
-                Vector3 delta = anim.deltaPosition;
-                delta.y = 0;
-                Vector3 v = (delta * rm_multi) / states.delta;
-                states.rib.velocity = v;
+                Vector3 delta2 = anim.deltaPosition;
+                delta2.y = 0;
+                Vector3 v = (delta2 * rm_multi) / delta;
+                rib.velocity = v;
             }
             else
             {
-                roll_t += states.delta /0.6f;
+                roll_t += delta / 0.6f;
                 if (roll_t > 1)
                     roll_t = 1;
-                float zValue = states.roll_curve.Evaluate(roll_t);
-                Vector3 v1= Vector3.forward * zValue;
+                if (states == null)
+                    return;
+                float zValue = roll_curve.Evaluate(roll_t);
+                Vector3 v1 = Vector3.forward * zValue;
                 Vector3 relative = transform.TransformDirection(v1);
                 Vector3 v2 = (relative * rm_multi);
-                states.rib.velocity = v2;
+                rib.velocity = v2;
             }
-           
+
 
         }
 
