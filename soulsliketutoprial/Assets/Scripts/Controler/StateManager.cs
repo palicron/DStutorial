@@ -34,7 +34,8 @@ namespace SA
         public bool inAction;
         public bool isTwoHanded;
         public bool usingItem;
-
+        public bool isBlocking;
+        public bool isLeftHand; 
 
         [Header("Other")]
         public EnemyTarget lockOnTarget;
@@ -105,13 +106,19 @@ namespace SA
         }
         public void FixedTick(float d)
         {
+
             delta = d;
 
+
             usingItem = anim.GetBool("interacting");
+            isBlocking = false;
 
             DetectAction();
             DetecItemAction();
             inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
+
+            anim.SetBool("block", isBlocking);
+            anim.SetBool("isLeft", isLeftHand);
             if (inAction)
             {
                 anim.applyRootMotion = true;
@@ -174,22 +181,58 @@ namespace SA
         public void DetectAction()
         {
 
-            if (!canMove || usingItem)
+            if (!canMove || usingItem || isBlocking)
                 return;
             if (!rb && !rt && !lt && !lb)
                 return;
 
-            string tagetAnimation = null;
-           
+
             Action slot = actionManager.GetActionSlot(this);
             if (slot == null)
                 return;
+            switch (slot.type)
+            {
+                case ActionType.attack:
+                    AttackAction(slot);
+                    break;
+                case ActionType.block:
+                    BlockAction(slot);
+                    break;
+                case ActionType.spells:
+                  
+                    break;
+                case ActionType.parry:
+                    ParryAction(slot);
+                    break;
+                default:
+                    break;
+            }
+          
+        }
+
+        private void AttackAction(Action slot)
+        {
+            string tagetAnimation = null;
             tagetAnimation = slot.targetAnim;
             canMove = false;
             inAction = true;
             anim.SetBool("mirror", slot.mirror);
             anim.CrossFade(tagetAnimation, 0.14f);
-            // rib.drag = 4;
+
+        }
+        private void BlockAction(Action slot)
+        {
+            isBlocking = true;
+            isLeftHand = slot.mirror;
+        }
+        private void ParryAction(Action slot)
+        {
+            string tagetAnimation = null;
+            tagetAnimation = slot.targetAnim;
+            canMove = false;
+            inAction = true;
+            anim.SetBool("mirror", slot.mirror);
+            anim.CrossFade(tagetAnimation, 0.14f);
 
         }
         public void DetecItemAction()
