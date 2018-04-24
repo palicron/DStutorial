@@ -65,7 +65,7 @@ namespace SA
             rib.drag = 4;
             rib.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
             inventoryManager = GetComponent<InventoryManager>();
-            inventoryManager.Init();
+            inventoryManager.Init(this);
             actionManager = GetComponent<ActionManager>();
             actionManager.Init(this);
 
@@ -109,12 +109,9 @@ namespace SA
 
             usingItem = anim.GetBool("interacting");
 
-
-
-
             DetectAction();
             DetecItemAction();
-            inventoryManager.curWeapon.weaponModel.SetActive(!usingItem);
+            inventoryManager.rightHandWeapon.weaponModel.SetActive(!usingItem);
             if (inAction)
             {
                 anim.applyRootMotion = true;
@@ -183,13 +180,14 @@ namespace SA
                 return;
 
             string tagetAnimation = null;
-
+           
             Action slot = actionManager.GetActionSlot(this);
             if (slot == null)
                 return;
             tagetAnimation = slot.targetAnim;
             canMove = false;
             inAction = true;
+            anim.SetBool("mirror", slot.mirror);
             anim.CrossFade(tagetAnimation, 0.14f);
             // rib.drag = 4;
 

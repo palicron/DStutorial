@@ -76,7 +76,7 @@ namespace SA
                 if (!eStates.canMove)
                     return;
                 delta = eStates.delta;
-                Debug.Log("carajo");
+              
             }
 
               rib.drag = 0;
@@ -112,13 +112,13 @@ namespace SA
         {
             if (states == null)
                 return;
-            states.inventoryManager.curWeapon.w_hook.OpenDamageColliders();
+            states.inventoryManager.OpenAllDamageColliders();
         }
         public void CloseDamageColliders()
         {
             if (states == null)
                 return;
-            states.inventoryManager.curWeapon.w_hook.CloseDamageColliders();
+            states.inventoryManager.CloseAllDamageColliders();
         }
     }
 
