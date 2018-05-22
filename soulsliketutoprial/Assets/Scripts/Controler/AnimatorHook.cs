@@ -120,6 +120,18 @@ namespace SA
                 return;
             states.inventoryManager.CloseAllDamageColliders();
         }
+        public void OpenParryCollider()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.OpenParryCollider();
+        }
+        public void CloseParryCollider()
+        {
+            if (states == null)
+                return;
+            states.inventoryManager.CloseParryCollider();
+        }
     }
 
 }

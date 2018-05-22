@@ -11,12 +11,15 @@ namespace SA
         public bool hasLeftHandWepaon = true;
         public Weapon leftHandWeapon;
         private StateManager states;
+
+        public GameObject parryColider;
         public void Init(StateManager st)
         {
             states = st;
             EquipWeapon(rightHandWeapon, false);
             EquipWeapon(rightHandWeapon, true);
             CloseAllDamageColliders();
+            CloseParryCollider();
         }
 
         public void EquipWeapon(Weapon w, bool isLeft =false)
@@ -42,6 +45,15 @@ namespace SA
                 rightHandWeapon.w_hook.CloseDamageColliders();
             if (leftHandWeapon.w_hook != null)
                 leftHandWeapon.w_hook.CloseDamageColliders();
+        }
+
+        public void CloseParryCollider()
+        {
+            parryColider.SetActive(false);
+        }
+        public void OpenParryCollider()
+        {
+            parryColider.SetActive(false);
         }
     }
 

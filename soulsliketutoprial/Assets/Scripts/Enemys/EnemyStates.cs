@@ -7,6 +7,7 @@ namespace SA
     public class EnemyStates : MonoBehaviour
     {
         public float healt;
+        public bool canBeParried =true;
         public Animator anim;
         public bool canMove;
         public Rigidbody rib;
@@ -106,10 +107,27 @@ namespace SA
            
             anim.Play("damage 1");
             anim.applyRootMotion = true;
+            anim.SetBool("canMove", false);
 
 
         }
+        public void CheckForParry(Transform target)
+        {
+            if (!canBeParried || isInvicible)
+                return;
 
+            Vector3 dir = transform.position - target.position;
+            dir.Normalize();
+            float dot = Vector3.Dot(target.forward, dir);
+            if (dot < 0)
+                return;
+
+            isInvicible = true;
+
+            anim.Play("attack_interrupt");
+            anim.applyRootMotion = true;
+            anim.SetBool("canMove", false);
+        }
     }
 }
 
